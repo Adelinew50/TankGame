@@ -1,4 +1,4 @@
-//Daniel Shiffman
+ //Daniel Shiffman
 // Example 10-5: Object-oriented timer
 
 class Timer {
