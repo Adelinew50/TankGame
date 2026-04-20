@@ -23,13 +23,25 @@ void setup() {
 void draw() {
   imageMode(CENTER);
   image (b1, width/2, height/2, 650, 650) ;
+
+  // Display the lasers and detect collison
   for (int i = 0; i < projectiles.size(); i++) {
     Projectile p = projectiles.get(i);
+    for (int j = 0; j < rocks.size(); j++) {
+      Rock r = rocks.get(j);
+      if (p.intersect(r)) {
+        score = score + 10;
+        projectiles.remove(i);
+        rocks.remove(j);
+      }
+    }
     p.display();
     p.move();
   }
   t1.display();
-  
+  // }
+  // }
+
 
   //Distribution of Rocks on a Timer
   if (rockTimer.isFinished()) {
@@ -74,14 +86,13 @@ void mousePressed() {
   float dx=mouseX - t1.x;
   float dy = mouseY -t1.y;
   float mag = sqrt(dx*dx+dy*dy);
-  
-  if(mag > 0) {
-  dx /= mag;
-  dy /= mag;
-  
-  float speed = 5;
-  println(projectiles.size());
-  projectiles.add(new Projectile(t1.x, t1.y, dx * speed, dy*speed));
+
+  if (mag > 0) {
+    dx /= mag;
+    dy /= mag;
+
+    float speed = 5;
+    projectiles.add(new Projectile(t1.x, t1.y, dx * speed, dy * speed));
   }
 }
 

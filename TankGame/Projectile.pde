@@ -6,11 +6,11 @@ class Projectile {
 
 
   //Constructor
-  Projectile(float x, float y, float w, float h) {
+  Projectile(float x, float y, float vx, float vy) {
     this.x = x;
     this.y = y;
-    this.w = w;
-    this.h = h;
+    w =10;
+    h=10;
     this.vx = vx;
     this.vy = vy;
     speed = 10;
@@ -29,6 +29,14 @@ class Projectile {
     //y = y - speed;
   }
 
+  boolean intersect(Rock r) {
+    float d = dist(x, y, r.x, r.y);
+    if (d<100) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   boolean reachedBottom() {
     if (y>height + 100) {
