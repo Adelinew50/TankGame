@@ -1,8 +1,8 @@
 class Rock {
   // Member Variables
-  int x, y, diam, speed;
-
+  int x, y, diam, speed, w, h ;
   PImage rock1;
+   char dir;
   
   Rock() {
     x=int (random(width));
@@ -23,7 +23,6 @@ class Rock {
     y = y + speed;
   }
 
-
   boolean reachedBottom() {
     if (y>height + 100) {
       return true;
@@ -31,4 +30,5 @@ class Rock {
       return false;
     }
   }
+  
 }

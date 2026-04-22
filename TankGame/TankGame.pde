@@ -37,8 +37,12 @@ void draw() {
     }
     p.display();
     p.move();
+    if(p.reachedEdge()){
+    projectiles.remove(i);
+    }
   }
   t1.display();
+   
   // }
   // }
 
@@ -80,6 +84,7 @@ void keyPressed() {
   } else if (key == 'a') {
     t1.move('a');
   }
+  
 }
 
 void mousePressed() {
