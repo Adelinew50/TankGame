@@ -1,6 +1,6 @@
 class Tank {
   // Member Variable
-  float x, y, w, h, speed, health;
+  float x, y, w, h, speed, health, ammo;
   PImage iTank, iTankR, iTankL, iTankD;
   char idir;
 
@@ -10,8 +10,9 @@ class Tank {
     y=100.0;
     w=100.0;
     h=100.0;
+    ammo=50;
     speed=5.0;
-    health=75.20;
+    health=100;
     idir='u';
     iTank=loadImage("wright_tank.png");
     iTankR=loadImage("wright_tankright.png");

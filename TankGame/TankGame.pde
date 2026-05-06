@@ -1,20 +1,25 @@
 //Adeline Wright| April 1 | TankGame
 ArrayList<Rock> rocks = new ArrayList<Rock>();
 ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+ArrayList<PowerUp> powerups = new ArrayList<PowerUp>();
 Timer rockTimer, puTimer;
-int score, rocksMissed, x, y, h, w;
+float score, rocksMissed, health, projectileCount, x, y, h, w, ammo;
 Tank t1;
-Tank t2;
 boolean play;
 PImage b1;
+//
 
 void setup() {
   size(500, 500);
   t1= new Tank();
+  puTimer = new Timer(5000);
+  puTimer.start();
   b1= loadImage("background.png");
   rockTimer = new Timer(2000);
   rockTimer.start();
   score=0;
+  health=100;
+  ammo=50;
   rocksMissed=0;
   play=false;
 }
@@ -37,12 +42,12 @@ void draw() {
     }
     p.display();
     p.move();
-    if(p.reachedEdge()){
-    projectiles.remove(i);
+    if (p.reachedEdge()) {
+      projectiles.remove(i);
     }
   }
   t1.display();
-   
+
   // }
   // }
 
@@ -60,8 +65,9 @@ void draw() {
 
 
     if (t1.intersect(rock)) {
-      rocks.remove(rock);
-      score+=rock.diam;
+      rocks.remove(i);
+      t1.health-=20;
+      i--;
     }
 
     if (rock.reachedBottom()) {
@@ -72,6 +78,37 @@ void draw() {
     println("Rocks;"  + rocks.size());
   }
   infoPanel();
+
+
+  //Distribution of PowerUps on a Timer
+  if (puTimer.isFinished()) {
+    powerups.add(new PowerUp(random(width),-50));
+    puTimer.start();
+  }
+  //Display and Move Powerups
+  for (int i = 0; i<powerups.size(); i++) {
+    PowerUp pu = powerups.get(i);
+    pu.display();
+    pu.move();
+    if(pu.reachedBottom()) {
+      powerups.remove(i);
+    }
+    //check bottom
+    
+    if (pu.intersect(t1)) {
+      //remove
+      powerups.remove(pu);
+      if (pu.type=='H') {
+        t1.health+=10;
+        //Ammo
+      } else if (pu.type == 'A') {
+        
+       t1.ammo+=10;
+      }
+      //powerups.remove(i);
+      //i--;
+    }
+  }
 }
 
 void keyPressed() {
@@ -84,10 +121,10 @@ void keyPressed() {
   } else if (key == 'a') {
     t1.move('a');
   }
-  
 }
 
 void mousePressed() {
+  if (t1.ammo>0){
   float dx=mouseX - t1.x;
   float dy = mouseY -t1.y;
   float mag = sqrt(dx*dx+dy*dy);
@@ -98,11 +135,20 @@ void mousePressed() {
 
     float speed = 5;
     projectiles.add(new Projectile(t1.x, t1.y, dx * speed, dy * speed));
+    
+    t1.ammo-=1;
   }
-}
+   //if (t1.fire()) {
+   // projectiles.add(new Projectile(t1.x, t1.y));
+    //t1.projectileCount--;
+  }
+  }
+
+
 
 void infoPanel() {
   rectMode(CENTER);
+  textAlign(LEFT);
   fill(127, 127);
   noStroke();
   rect(width/2, height-25, width, 50);
@@ -110,6 +156,10 @@ void infoPanel() {
   textSize(15);
   text("Score:" + score, 20, width-20);
   textSize(15);
-  text("Rocks Missed:" + rocksMissed, width -400, width-20);
+  text("Rocks Missed:" + rocksMissed, width -350, width-20);
+  textSize(15);
+  text("Health:" + t1.health, width-200, height-20);
+  textSize(15);
+  text("Ammo:" + t1.ammo, 20, height-6);
   textSize(15);
 }
