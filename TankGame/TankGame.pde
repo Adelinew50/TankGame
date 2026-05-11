@@ -24,11 +24,40 @@ void setup() {
   play=false;
 }
 
+void startScreen () {
+  background(20);
+  image(b1, 0, 0);
+  fill(255);
+  textSize(30);
+  text("SpaceGame", width/2, 210);
+  textSize(30);
+  text("Adeline Wright", 50, 210);
+ 
+  if (mousePressed) {
+    play=true;
+  }
+}
+
+void gameOver() {
+  image(b1,0,0);
+  fill(50, 100, 200);
+  textSize(30);
+  text("Game Over!", width/2, height/2);
+  text("You got a score of: " + score, 250,200);
+  noLoop();
+}
+
 
 void draw() {
   imageMode(CENTER);
   image (b1, width/2, height/2, 650, 650) ;
-
+   if (!play) {
+    startScreen();
+  }
+if (t1.health <= 0 || rocksMissed >= 10) {
+ gameOver();
+ }
+  else { 
   // Display the lasers and detect collison
   for (int i = 0; i < projectiles.size(); i++) {
     Projectile p = projectiles.get(i);
@@ -40,11 +69,13 @@ void draw() {
         rocks.remove(j);
       }
     }
+    
     p.display();
     p.move();
     if (p.reachedEdge()) {
       projectiles.remove(i);
     }
+  }
   }
   t1.display();
 
